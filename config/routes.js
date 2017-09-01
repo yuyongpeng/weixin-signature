@@ -36,7 +36,7 @@ module.exports.routes = {
     view: 'homepage'
   },
 
-  '/api/sign': 'IndexController.getSign'
+  '/api/sign': 'IndexController.getSign',
   /***************************************************************************
   *                                                                          *
   * Custom routes here...                                                    *
@@ -46,5 +46,10 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
+  '/login': {
+    view: 'weixinlogin',
+    controller: 'Weixin',
+    action: 'login'
+  }
 
 };

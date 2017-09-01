@@ -1,0 +1,15 @@
+{
+         "apps":[
+                     {
+                                   "name": "nowness-weixin",
+                                   "cwd": "/opt/yuyongpeng/weixin-signature/",
+                                   ".js" : "node",
+                                   "script": "./app.js",
+                                   "exec_interpreter": "bash",
+                                   "error_file" : "./error.log",
+                                   "out_file": "./out.log",
+                                   "pid_file": "./weixin-api.pid",
+                                   "watch": false
+                                  }
+                   ]
+}

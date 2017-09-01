@@ -1,11 +1,3 @@
-/**
- * Copyright (c) 2015 Meizu bigertech, All rights reserved.
- * http://www.bigertech.com/
- * @author liuxing
- * @date  15/6/25
- * @description
- *
- */
 
 var request = require('request');
 var moment = require('moment');
@@ -77,9 +69,19 @@ function getSign(url, appid) {
   });
 }
 
+function login(req, res){
+  var open_id = sails.config.wx.open_id;
+  var redirect_url = sails.config.wx.redirect_url;
+
+  return res.view('weixinlogin',{
+    open_id: open_id,
+    redirect_url: redirect_url
+  });
+
+}
 
 module.exports = {
-  getAccessToken: getAccessToken,
+  login: login,
   getJSToken: getJSToken,
   getSign: getSign
 }

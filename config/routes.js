@@ -46,7 +46,7 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
-  '/login': {
+  'GET /login': {
     view: 'weixinlogin',
     controller: 'Weixin',
     action: 'login'

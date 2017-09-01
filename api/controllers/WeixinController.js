@@ -19,7 +19,7 @@ function weixin(req, res) {
   });
 }
 
-function login(req, res){
+function loginAction(req, res){
   var open_id = sails.config.wx.app_id;
   var redirect_url = sails.config.wx.redirect_url;
   return {
@@ -30,5 +30,5 @@ function login(req, res){
 
 module.exports = {
     weixin: weixin,
-    login: login
+    loginAction: loginAction
 }

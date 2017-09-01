@@ -22,13 +22,13 @@ function weixin(req, res) {
 function loginAction(req, res){
   var open_id = sails.config.wx.app_id;
   var redirect_url = sails.config.wx.redirect_url;
-  return {
+  return res.view('login',{
     open_id: open_id,
     redirect_url: redirect_url
-  }
+  });
 }
 
 module.exports = {
     weixin: weixin,
-    loginAction: loginAction
+    login: loginAction
 }

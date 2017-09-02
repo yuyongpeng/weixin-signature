@@ -28,7 +28,16 @@ function loginAction(req, res){
   });
 }
 
+function callbackAction(req, res){
+  WeixinService.getSign('nowness').then(function(data){
+    return res.view('weixincallback',{
+      userinfo: JSON.stringify(data)
+    });
+  });
+}
+
 module.exports = {
     weixin: weixin,
-    login: loginAction
+    login: loginAction,
+    callback: callbackAction
 }

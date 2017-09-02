@@ -5,16 +5,16 @@ var Sign = require('../Util/sign');
 
 
 
-var url_token = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&';
+var token_url = 'https://api.weixin.qq.com/sns/oauth2/access_token?grant_type=authorization_code&';
+var refresh_url = 'https://api.weixin.qq.com/sns/oauth2/refresh_token?grant_type=refresh_token';
+var userinfo_url = 'https://api.weixin.qq.com/sns/userinfo?';
 var js_token = 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token=';
 var Promise = require('bluebird');
 var signs = {};
 
 
-var getAccessToken = function (appid) {
-  var app = sails.config.weixin[appid];
-  var url = url_token + 'appid=' + appid + '&secret='+ app.secret;
-
+var getAccessToken = function (appid, secret, code) {
+  var url = token_url + 'appid=' + appid + '&secret='+ secret + '&code=' + code;
   return new Promise(function (resolve, reject) {
     request(url, function (err, res, body) {
       if (err) {
@@ -25,64 +25,59 @@ var getAccessToken = function (appid) {
   });
 };
 
-var getJSToken = function (appid) {
-  return new Promise(function (resolve, reject) {
-    getAccessToken(appid).then(function(data){
-      request(js_token + data.access_token, function (err, res, body) {
-        var data = JSON.parse(body);
-        console.log(err, data);
-        if (err || data['errcode'] !== 0) {
-          return reject(err)
-        }
-        resolve(data);
-      });
+var refreshToken = function(appid, refresh_token){
+  var url = refresh_url + '&appid=' + appid + '&refresh_token=' + refresh_token;
+  return new Promise(function(resolve, reject){
+   request(url, function(err, res, body){
+    if(err){
+      return reject(err);
+    }
+    resolve(JSON.parse(body));
+   });
+  });
+}
+
+var getUserInfo = function(token, appid){
+  var url = userinfo_url + 'access_token=' + token + '&openid=' + appid;
+  return new Promise(function(resolve,reject){
+    request(url, function(err, res, body){
+      if(err){
+        return reject(err);
+      }
+      resolve(JSON.parse(body))
     });
   });
-};
+}
 
 /**
- * 是否大于当前的时间
- * @param expireDate
- * @returns {*}
+ * 最终返回的是用的信息
+ * @param {*} url 
+ * @param {*} appid 
+ * @param {*} thirdlogin 
  */
-function expireCheck(expireDate) {
-  return expireDate.isBefore(moment());
-}
+function getSign(thirdlogin) {
+  app_id = sails.config.thirdlogin.weixin[thirdlogin].open_id;
+  app_secret = sails.config.thirdlogin.weixin[thirdlogin].open_secret;
+  redirect_url = sails.config.thirdlogin.weixin[thirdlogin].redirect_url;
 
-function getSign(url, appid) {
   return new Promise(function (resolve, reject) {
-    if (!signs[url] || expireCheck(signs[url]['expire']) ) {
-      sails.log('get new sign!');
-      getJSToken(appid).then(function(result){
-        var signStr = Sign(result['ticket'], url);
-        signs[url] = {
-          appid: appid,
-          sign: signStr,
-          expire: moment(new Date()).add(result['expires_in'] - 100, 's')
-        };
-        return resolve(signStr);
-      });
-    }else {
-      sails.log('get sign from cache!');
-      resolve(signs[url]['sign']);
-    }
+    getAccessToken(app_id, app_secret, code).then(function(data){
+      access_token = data['access_token'];
+      refresh_token = data['refresh_token'];
+      openid = data['openid'];
+      unionid = data['unionid'];
+      sails.log(access_token);
+      return resolve(data);
+    });
+    getUserInfo(access_token, app_id).then(function(data){
+      return resolve(data);
+    });
   });
-}
-
-function login(req, res){
-  var open_id = sails.config.wx.open_id;
-  var redirect_url = sails.config.wx.redirect_url;
-
-  return res.view('weixinlogin',{
-    open_id: open_id,
-    redirect_url: redirect_url
-  });
-
 }
 
 module.exports = {
-  login: login,
-  getJSToken: getJSToken,
+  getAccessToken: getAccessToken,
+  getUserInfo: getUserInfo,
   getSign: getSign
 }
 

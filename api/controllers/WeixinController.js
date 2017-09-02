@@ -20,7 +20,7 @@ function weixin(req, res) {
 }
 
 function loginAction(req, res){
-  var open_id = sails.config.wx.open_id;
+  var open_id = sails.config.thirdlogin.weixin['nowness'].open_id;
   var redirect_url = sails.config.wx.redirect_url;
   return res.view('weixinlogin',{
     open_id: open_id,

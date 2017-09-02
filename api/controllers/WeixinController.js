@@ -34,7 +34,7 @@ function callbackAction(req, res){
   var state = req.query.state;
   sails.log('code=' + code);
   sails.log('state=' + state);
-  WeixinService.getSign('nowness').then(function(data){
+  WeixinService.getSign('nowness',code).then(function(data){
     return res.view('weixincallback',{
       userinfo: JSON.stringify(data)
     });

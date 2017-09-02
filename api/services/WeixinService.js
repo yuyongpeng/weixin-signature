@@ -64,7 +64,7 @@ function getSign(thirdlogin, code) {
   sails.log(app_secret);
   sails.log(redirect_url);
   sails.log(code);
-  return new Promise(function (resolve, reject) {
+  var promise = new Promise(function (resolve, reject) {
     getAccessToken(app_id, app_secret, code).then(function(data){
       access_token = data['access_token'];
       refresh_token = data['refresh_token'];
@@ -72,13 +72,14 @@ function getSign(thirdlogin, code) {
       unionid = data['unionid'];
       sails.log(access_token);
       sails.log(data);
-      return resolve(data);
+      resolve(data);
     });
     sails.log('unionid=' + unionid);
     getUserInfo(access_token, app_id).then(function(data){
-      return resolve(data);
+      resolve(data);
     });
   });
+  return promise;
 }
 
 module.exports = {

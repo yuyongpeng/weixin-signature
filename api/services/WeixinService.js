@@ -78,7 +78,7 @@ function getSign(thirdlogin, code) {
       sails.log('====================');
       sails.log(data);
       access_token = data['access_token'];
-      app_id = date['openid'];
+      app_id = data['openid'];
       getUserInfo(access_token, app_id).then(function(data){
         resolve(data);
       });

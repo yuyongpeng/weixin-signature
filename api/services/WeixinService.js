@@ -73,11 +73,18 @@ function getSign(thirdlogin, code) {
       sails.log(access_token);
       sails.log(data);
       resolve(data);
+    }).then(function(data){
+      access_token = data['access_token'];
+      app_id = date['openid'];
+      sails.log('unionid=' + unionid);
+      getUserInfo(access_token, app_id).then(function(data){
+        resolve(data);
+      });
+
     });
-    sails.log('unionid=' + unionid);
-    getUserInfo(access_token, app_id).then(function(data){
-      resolve(data);
-    });
+    //getUserInfo(access_token, app_id).then(function(data){
+    //  resolve(data);
+    //});
   });
   return promise;
 }

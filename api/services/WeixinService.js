@@ -56,13 +56,14 @@ var getUserInfo = function(token, appid){
  * @param {*} appid 
  * @param {*} thirdlogin 
  */
-function getSign(thirdlogin) {
+function getSign(thirdlogin, code) {
   app_id = sails.config.thirdlogin.weixin[thirdlogin].open_id;
   app_secret = sails.config.thirdlogin.weixin[thirdlogin].open_secret;
   redirect_url = sails.config.thirdlogin.weixin[thirdlogin].redirect_url;
   sails.log(app_id);
   sails.log(app_secret);
   sails.log(redirect_url);
+  sails.log(code);
   return new Promise(function (resolve, reject) {
     getAccessToken(app_id, app_secret, code).then(function(data){
       access_token = data['access_token'];

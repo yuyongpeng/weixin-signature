@@ -64,6 +64,8 @@ function getSign(thirdlogin, code) {
   sails.log(app_secret);
   sails.log(redirect_url);
   sails.log(code);
+  var access_token = "";
+  var refresh_token = "";
   var promise = new Promise(function (resolve, reject) {
     getAccessToken(app_id, app_secret, code).then(function(data){
       access_token = data['access_token'];
@@ -72,7 +74,8 @@ function getSign(thirdlogin, code) {
       unionid = data['unionid'];
       sails.log(access_token);
       sails.log(data);
-      resolve(data);
+      //resolve(data);
+      return data;
     }).then(function(data){
       sails.log('====================');
       sails.log(data);

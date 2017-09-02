@@ -22,6 +22,7 @@ function weixin(req, res) {
 function loginAction(req, res){
   var open_id = sails.config.thirdlogin.weixin['nowness'].open_id;
   var redirect_url = sails.config.thirdlogin.weixin['nowness'].redirect_url;
+  sails.log('fffffff');
   return res.view('weixinlogin',{
     open_id: open_id,
     redirect_url: redirect_url

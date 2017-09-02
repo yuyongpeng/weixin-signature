@@ -15,6 +15,7 @@ var signs = {};
 
 var getAccessToken = function (appid, secret, code) {
   var url = token_url + 'appid=' + appid + '&secret='+ secret + '&code=' + code;
+  sails.log(url);
   return new Promise(function (resolve, reject) {
     request(url, function (err, res, body) {
       if (err) {
@@ -59,7 +60,9 @@ function getSign(thirdlogin) {
   app_id = sails.config.thirdlogin.weixin[thirdlogin].open_id;
   app_secret = sails.config.thirdlogin.weixin[thirdlogin].open_secret;
   redirect_url = sails.config.thirdlogin.weixin[thirdlogin].redirect_url;
-
+  sails.log(app_id);
+  sails.log(app_secret);
+  sails.log(redirect_url);
   return new Promise(function (resolve, reject) {
     getAccessToken(app_id, app_secret, code).then(function(data){
       access_token = data['access_token'];

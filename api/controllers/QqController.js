@@ -22,7 +22,7 @@ function weixin(req, res) {
 function loginAction(req, res){
   var app_id = sails.config.thirdlogin.qq['nowness'].app_id;
   var redirect_url = sails.config.thirdlogin.qq['nowness'].redirect_url;
-  return res.view('weixinlogin',{
+  return res.view('qqlogin',{
     app_id: app_id,
     redirect_url: redirect_url
   });

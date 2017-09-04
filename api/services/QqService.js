@@ -1,7 +1,8 @@
 
 var request = require('request');
 var moment = require('moment');
-var Sign = require('../Util/sign');
+var urlparams = require('../Util/qq');
+var urlx = require('url');
 
 
 var code_url = "https://graph.qq.com/oauth2.0/authorize/?response_type=code&client_id=101425922&redirect_uri=http://testshare.nowness.com/&scope=get_user_info&state=124";
@@ -26,6 +27,8 @@ var getAccessToken = function (code) {
       if (err) {
         return reject(err);
       }
+      var obj = urlparams(body);
+      sails.log(obj);
       resolve(body);
     });
   });

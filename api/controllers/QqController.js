@@ -40,7 +40,7 @@ function callbackAction(req, res){
         sails.log(openid + "======<<");
         QqService.getUserInfo(token, openid).then(function(data){
           sails.log(data);
-          res.view('qqmessage', {
+          return res.view('qqmessage', {
             qqUserInfo: "xxxxx"
           });
         });

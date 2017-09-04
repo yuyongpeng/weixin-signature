@@ -54,10 +54,6 @@ module.exports.routes = {
     controller: 'Weixin',
     action: 'callback'
   },
-  'GET /qqlogin2': {
-    controller: 'Qq',
-    action: 'login2'
-  },
   'GET /qqlogin': {
     controller: 'Qq',
     action: 'login'

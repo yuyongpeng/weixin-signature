@@ -25,12 +25,23 @@ function callbackAction(req, res){
   var expires_in = req.query.expires_in;
   var refresh_token = req.query.resfresh_token;
 
-  sails.log(req.query.code);
-  sails.log(req.query.state);
-  sails.log(req.query.usercancel);
-  sails.log(req.query.access_token);
-  sails.log(req.query.expires_in);
-  sails.log(req.query.refresh_token);
+
+  if ( req.query.hasOwnProperty(code) ){
+    sails.log(req.query.code);
+    sails.log(req.query.state);
+  }
+  if ( req.query.hasOwnProperty(code) ){
+    sails.log(req.query.usercancel);
+    sails.log(req.query.state);
+  }
+
+  if ( req.query.hasOwnProperty(access_token) ){
+    sails.log(req.query.access_token);
+    sails.log(req.query.expires_in);
+    sails.log(req.query.refresh_token);
+  }
+
+
   return res.view('qqcallback',{userinfo: "test"});
 }
 

@@ -59,7 +59,7 @@ var refreshToken = function(refresh_token){
 
 var getUserInfo = function(token, openid){
   var app_id = sails.config.thirdlogin.qq['nowness'].app_id;
-  var url = userinfo_url + "&oauth_consumer_key=" + app_id + "&openid=" + openid;
+  var url = userinfo_url + "access_token=" + token + "&oauth_consumer_key=" + app_id + "&openid=" + openid;
   sails.log(url);
   return new Promise(function(resolve,reject){
     request(url, function(err, res, body){

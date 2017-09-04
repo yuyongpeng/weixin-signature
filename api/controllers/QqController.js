@@ -41,7 +41,7 @@ function callbackAction(req, res){
         QqService.getUserInfo(token, openid).then(function(data){
           sails.log(data);
           return res.view('qqmessage', {
-            qqUserInfo: "xxxxx"
+            qqUserInfo: JSON.stringify(data)
           });
         });
       });
@@ -52,16 +52,7 @@ function callbackAction(req, res){
     sails.log(req.query.state);
   }
 
-  if ( req.query.hasOwnProperty('access_token') ){
-    sails.log('access_token');
-    sails.log(req.query.access_token);
-    sails.log(req.query.expires_in);
-    sails.log(req.query.refresh_token);
-
-  }
-
-
-  return res.view('qqcallback',{userinfo: "test"});
+//  return res.view('qqcallback',{userinfo: "test"});
 }
 
 module.exports = {

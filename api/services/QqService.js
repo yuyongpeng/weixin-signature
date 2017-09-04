@@ -15,7 +15,7 @@ var signs = {};
 
 
 
-var getAccessToken = function (appid, secret, code) {
+var getAccessToken = function (code) {
   var app_id = sails.config.thirdlogin.qq['nowness'].app_id;
   var app_key = sails.config.thirdlogin.qq['nowness'].app_key;
   var redirect_url = sails.config.thirdlogin.qq['nowness'].redirect_url;

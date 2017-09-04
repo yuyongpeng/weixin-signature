@@ -18,7 +18,7 @@ var urlparams = function(params){
   var obj = {};
   params.split('&').forEach(function(val, index, arr){
     var kv = val.split('=');
-    var strkv = "{" + kv[0] + ": '" + kv[1] + "}";
+    var strkv = "{" + kv[0] + ": '" + kv[1] + "'}";
     sails.log(strkv);
     var ext = JSON.parse(strkv);
     _.extend(obj, ext);

@@ -18,17 +18,10 @@ var urlparams = function(params){
   var obj = {};
   params.split('&').forEach(function(val, index, arr){
     var kv = val.split('=');
-    var strkv = "{'" + kv[0] + "': '" + kv[1] + "'}";
-    sails.log(strkv);
+    var strkv = '{"' + kv[0] + '": "' + kv[1] + '"}';
     var ext = JSON.parse(strkv);
     _.extend(obj, ext);
-    //Object.defineProperty(obj, key, {
-    //  writable: false,
-    //  configurable: false,
-     // value: value
-    //});
   });
-  sails.log(obj);
   return obj;
 }
 
@@ -44,8 +37,7 @@ var getAccessToken = function (code) {
         return reject(err);
       }
       var obj = urlparams(body);
-      sails.log(obj);
-      resolve(body);
+      resolve(obj);
     });
   });
 };

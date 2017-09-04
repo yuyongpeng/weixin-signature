@@ -2,6 +2,7 @@
 var request = require('request');
 var moment = require('moment');
 var urlx = require('url');
+var _ = require('underscore');
 
 
 var code_url = "https://graph.qq.com/oauth2.0/authorize/?response_type=code&client_id=101425922&redirect_uri=http://testshare.nowness.com/&scope=get_user_info&state=124";
@@ -17,15 +18,14 @@ var urlparams = function(params){
   var obj = {};
   params.split('&').forEach(function(val, index, arr){
     var kv = val.split('=');
-    var key = kv[0];
-    var value = kv[1];
-    Object.defineProperty(obj, key, {
-      writable: false,
-      configurable: false,
-      value: value
-    })
-    //obj.key = value;
+    _.extend(obj, {kv[0]: kv[1]});
+    //Object.defineProperty(obj, key, {
+    //  writable: false,
+    //  configurable: false,
+     // value: value
+    //});
   });
+  sails.log(obj);
   return obj;
 }
 

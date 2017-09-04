@@ -1,7 +1,6 @@
 
 var request = require('request');
 var moment = require('moment');
-var urlparams = require('../Util/qq');
 var urlx = require('url');
 
 
@@ -14,7 +13,16 @@ var js_token = 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&ac
 var Promise = require('bluebird');
 var signs = {};
 
-
+var urlparams = function(params){
+  var obj = {};
+  params.split('&').forEach(function(val, index, arr){
+    var kv = val.split('=');
+    var key = kv[0];
+    var value = kv[1];
+    obj.key = value;
+  });
+  return obj;
+}
 
 var getAccessToken = function (code) {
   var app_id = sails.config.thirdlogin.qq['nowness'].app_id;

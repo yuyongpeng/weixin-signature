@@ -16,8 +16,21 @@ function login2Action(req, res){
 }
 
 function callbackAction(req, res){
+  sails.log(req.query);
+  var usercancel = req.query.usercancel;
+  var code = req.query.code;
+  var state = req.query.state;
+  
+  var access_token = req.query.access_token;
+  var expires_in = req.query.expires_in;
+  var refresh_token = req.query.resfresh_token;
+
   sails.log(req.query.code);
   sails.log(req.query.state);
+  sails.log(req.query.usercancel);
+  sails.log(req.query.access_token);
+  sails.log(req.query.expires_in);
+  sails.log(req.query.refresh_token);
   return res.view('qqcallback',{userinfo: "test"});
 }
 

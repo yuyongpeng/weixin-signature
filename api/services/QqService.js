@@ -8,8 +8,8 @@ var _ = require('underscore');
 var code_url = "https://graph.qq.com/oauth2.0/authorize/?response_type=code&client_id=101425922&redirect_uri=http://testshare.nowness.com/&scope=get_user_info&state=124";
 var token_url = 'https://graph.qq.com/oauth2.0/token?grant_type=authorization_code&';
 //var token_url = 'https://api.weixin.qq.com/sns/oauth2/access_token?grant_type=authorization_code&';
-var refresh_url = 'https://api.weixin.qq.com/sns/oauth2/refresh_token?grant_type=refresh_token';
-var userinfo_url = 'https://api.weixin.qq.com/sns/userinfo?';
+var refresh_url = 'https://graph.qq.com/oauth2.0/token?grant_type=refresh_token';
+var userinfo_url = 'https://graph.qq.com/user/get_user_info?';
 var js_token = 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token=';
 var Promise = require('bluebird');
 var signs = {};
@@ -42,20 +42,24 @@ var getAccessToken = function (code) {
   });
 };
 
-var refreshToken = function(appid, refresh_token){
-  var url = refresh_url + '&appid=' + appid + '&refresh_token=' + refresh_token;
+var refreshToken = function(refresh_token){
+  var app_id = sails.config.thirdlogin.qq['nowness'].app_id;
+  var app_key = sails.config.thirdlogin.qq['nowness'].app_key;
+  var url = refresh_url + 'client_id=' + app_id + '&client_secret='+ app_key + '&code=' + code + '&refresh_token=' + refresh_token;
   return new Promise(function(resolve, reject){
    request(url, function(err, res, body){
     if(err){
       return reject(err);
     }
-    resolve(JSON.parse(body));
+    var obj = urlparams(body);
+    resolve(obj);
    });
   });
 }
 
-var getUserInfo = function(token, appid){
-  var url = userinfo_url + 'access_token=' + token + '&openid=' + appid;
+var getUserInfo = function(token){
+  var app_id = sails.config.thirdlogin.qq['nowness'].app_id;
+  var url = userinfo_url + 'access_token=' + token + '&openid=' + app_id;
   return new Promise(function(resolve,reject){
     request(url, function(err, res, body){
       if(err){

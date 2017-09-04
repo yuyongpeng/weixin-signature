@@ -31,6 +31,10 @@ function callbackAction(req, res){
     var state = req.query.state;
     QqService.getAccessToken(code).then(function(data){
       sails.log(data.access_token + "----->");
+      var token = data.access_token;
+      QqService.getUserInfo(token).then(function(data){
+        sails.log(data);
+      });
     });
   }
   if ( req.query.hasOwnProperty('usercancel') ){

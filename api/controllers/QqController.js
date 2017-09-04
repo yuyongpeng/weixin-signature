@@ -41,7 +41,7 @@ function callbackAction(req, res){
         QqService.getUserInfo(token, openid).then(function(data){
           sails.log(data);
           res.view('qqmessage', {
-            qqUserInfo: data
+            qqUserInfo: "xxxxx"
           });
         });
       });

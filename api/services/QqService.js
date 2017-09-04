@@ -18,7 +18,9 @@ var urlparams = function(params){
   var obj = {};
   params.split('&').forEach(function(val, index, arr){
     var kv = val.split('=');
-    _.extend(obj, {kv[0]: kv[1]});
+    var strkv = "{" + kv[0] + ": '" + kv[1] + "}";
+    var ext = JSON.parse(strkv);
+    _.extend(obj, ext);
     //Object.defineProperty(obj, key, {
     //  writable: false,
     //  configurable: false,

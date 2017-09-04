@@ -34,6 +34,10 @@ function callbackAction(req, res){
       var token = data.access_token;
       QqService.getOpenid(token).then(function(data){
         sails.log(data);
+        var one = data.replace('callback(','');
+        var two = data.replace(');','');
+        var openid = JSON.parse(two);
+        sails.log(openid + "======<<");
       });
     });
   }

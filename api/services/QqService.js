@@ -128,7 +128,7 @@ function getSign(thirdlogin, code) {
 module.exports = {
   getAccessToken: getAccessToken,
   getUserInfo: getUserInfo,
-  getOpenid: getOpendid
+  getOpenid: getOpenid
 }
 
 

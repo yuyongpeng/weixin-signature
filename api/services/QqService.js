@@ -26,7 +26,7 @@ var getAccessToken = function (code) {
       if (err) {
         return reject(err);
       }
-      resolve(JSON.parse(body));
+      resolve(body);
     });
   });
 };

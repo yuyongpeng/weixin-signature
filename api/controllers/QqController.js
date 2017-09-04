@@ -29,6 +29,8 @@ function loginAction(req, res){
 }
 
 function callbackAction(req, res){
+  return res.view('qqcallback',{});
+
   var code = req.query.code;
   var state = req.query.state;
   sails.log('code=' + code);

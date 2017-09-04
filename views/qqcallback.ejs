@@ -6,7 +6,19 @@
         src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" charset="utf-8" data-callback="true"></script>
     </head>
     <body>
-        <span id="callback_container"></span>
-        <%= userinfo %>
+            <script type="text/javascript">
+                var paras = {};
+                
+                QC.api("get_user_info", paras)
+                    .success(function(s){//成功回调
+                        alert("获取用户信息成功！当前用户昵称为："+s.data.nickname);
+                    })
+                    .error(function(f){//失败回调
+                        alert("获取用户信息失败！");
+                    })
+                    .complete(function(c){//完成请求回调
+                        alert("获取用户信息完成！");
+                    });
+                </script>
     </body>
 </html>

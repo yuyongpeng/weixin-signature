@@ -57,22 +57,22 @@ var refreshToken = function(refresh_token){
   });
 }
 
-var getUserInfo = function(token){
+var getUserInfo = function(token, openid){
   var app_id = sails.config.thirdlogin.qq['nowness'].app_id;
-  var url = userinfo_url + 'access_token=' + token + '&openid=' + app_id;
+  var url = userinfo_url + "&oauth_consumer_key=" + app_id + "&openid=" + openid;
   sails.log(url);
   return new Promise(function(resolve,reject){
     request(url, function(err, res, body){
       if(err){
         return reject(err);
       }
-      resolve(JSON.parse(body))
+      resolve(body);
     });
   });
 }
 
-var getOpenid = function (access_token){
-  var url = openid_url + access_token;
+var getOpenid = function (access_token, openid){
+  var url = openid_url + access_token 
   return new Promise(function(resolve, reject){
     request(url, function(err, res, body){
       if (err){
@@ -82,47 +82,6 @@ var getOpenid = function (access_token){
       resolve(body);
     });
   });
-}
-
-/**
- * 最终返回的是用的信息
- * @param {*} url 
- * @param {*} appid 
- * @param {*} thirdlogin 
- */
-function getSign(thirdlogin, code) {
-  app_id = sails.config.thirdlogin.weixin[thirdlogin].open_id;
-  app_secret = sails.config.thirdlogin.weixin[thirdlogin].open_secret;
-  redirect_url = sails.config.thirdlogin.weixin[thirdlogin].redirect_url;
-  sails.log(app_id);
-  sails.log(app_secret);
-  sails.log(redirect_url);
-  sails.log(code);
-  var promise = new Promise(function (resolve, reject) {
-    getAccessToken(app_id, app_secret, code).then(function(data){
-      access_token = data['access_token'];
-      refresh_token = data['refresh_token'];
-      openid = data['openid'];
-      unionid = data['unionid'];
-      sails.log(access_token);
-      sails.log(data);
-      //return resolve(data);
-      return data;
-    }).then(function(data){
-      sails.log('====================');
-      sails.log(data);
-      access_token = data['access_token'];
-      app_id = data['openid'];
-      getUserInfo(access_token, app_id).then(function(data){
-        resolve(data);
-      });
-
-    });
-    //getUserInfo(access_token, app_id).then(function(data){
-    //  resolve(data);
-    //});
-  });
-  return promise;
 }
 
 module.exports = {

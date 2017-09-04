@@ -34,10 +34,16 @@ function callbackAction(req, res){
       var token = data.access_token;
       QqService.getOpenid(token).then(function(data){
         sails.log(data);
-        var one = data.replace('callback(','');
-        var two = data.replace(');','');
-        var openid = JSON.parse(two);
+        var js = data.replace('callback(','').replace(');','');
+        var getOpen = JSON.parse(js);
+        var openid = getOpen.openid;
         sails.log(openid + "======<<");
+        QqService.getUserInfo(token, openid).then(function(data){
+          sails.log(data);
+          res.view('qqmessage', {
+            qqUserInfo: data
+          });
+        });
       });
     });
   }

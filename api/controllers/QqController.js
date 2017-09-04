@@ -32,7 +32,7 @@ function callbackAction(req, res){
     QqService.getAccessToken(code).then(function(data){
       sails.log(data.access_token + "----->");
       var token = data.access_token;
-      QqService.getUserInfo(token).then(function(data){
+      QqService.getOpenid(token).then(function(data){
         sails.log(data);
       });
     });

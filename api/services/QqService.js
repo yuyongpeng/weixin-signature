@@ -10,7 +10,7 @@ var token_url = 'https://graph.qq.com/oauth2.0/token?grant_type=authorization_co
 //var token_url = 'https://api.weixin.qq.com/sns/oauth2/access_token?grant_type=authorization_code&';
 var refresh_url = 'https://graph.qq.com/oauth2.0/token?grant_type=refresh_token';
 var userinfo_url = 'https://graph.qq.com/user/get_user_info?';
-var js_token = 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token=';
+var openid_url = "https://graph.qq.com/oauth2.0/me?access_token=";
 var Promise = require('bluebird');
 var signs = {};
 
@@ -60,12 +60,26 @@ var refreshToken = function(refresh_token){
 var getUserInfo = function(token){
   var app_id = sails.config.thirdlogin.qq['nowness'].app_id;
   var url = userinfo_url + 'access_token=' + token + '&openid=' + app_id;
+  sails.log(url);
   return new Promise(function(resolve,reject){
     request(url, function(err, res, body){
       if(err){
         return reject(err);
       }
       resolve(JSON.parse(body))
+    });
+  });
+}
+
+var getOpenid = function (access_token){
+  var url = openid_url + access_token;
+  return new Promise(function(resolve, reject){
+    request(url, function(err, res, body){
+      if (err){
+        return reject(err);
+      }
+      sails.log(body);
+      resolve(body);
     });
   });
 }
@@ -114,7 +128,7 @@ function getSign(thirdlogin, code) {
 module.exports = {
   getAccessToken: getAccessToken,
   getUserInfo: getUserInfo,
-  getSign: getSign
+  getOpenid: getOpendid
 }
 
 

@@ -1,3 +1,8 @@
+/**
+ * show login page
+ * @param {*} req 
+ * @param {*} res 
+ */
 function loginAction(req, res){
   var app_id = sails.config.thirdlogin.qq['nowness'].app_id;
   var redirect_url = sails.config.thirdlogin.qq['nowness'].redirect_url;
@@ -13,21 +18,20 @@ function callbackAction(req, res){
   var expires_in = req.query.expires_in;
   var refresh_token = req.query.resfresh_token;
 
-
   if ( req.query.hasOwnProperty('code') ){
     sails.log(req.query.code);
     sails.log(req.query.state);
     var code = req.query.code;
     var state = req.query.state;
     QqService.getAccessToken(code).then(function(data){
-      sails.log(data.access_token + "----->");
+      sails.log('access_token = ' + data.access_token);
       var token = data.access_token;
       QqService.getOpenid(token).then(function(data){
         sails.log(data);
         var js = data.replace('callback(','').replace(');','');
         var getOpen = JSON.parse(js);
         var openid = getOpen.openid;
-        sails.log(openid + "======<<");
+        sails.log('openid = ' + openid );
         QqService.getUserInfo(token, openid).then(function(data){
           sails.log(data);
           return res.view('qqmessage', {

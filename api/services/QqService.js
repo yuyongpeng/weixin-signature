@@ -14,6 +14,10 @@ var openid_url = "https://graph.qq.com/oauth2.0/me?access_token=";
 var Promise = require('bluebird');
 var signs = {};
 
+/**
+ * url params to Object key=value
+ * @param {*} params 
+ */
 var urlparams = function(params){
   var obj = {};
   params.split('&').forEach(function(val, index, arr){
@@ -46,6 +50,7 @@ var refreshToken = function(refresh_token){
   var app_id = sails.config.thirdlogin.qq['nowness'].app_id;
   var app_key = sails.config.thirdlogin.qq['nowness'].app_key;
   var url = refresh_url + 'client_id=' + app_id + '&client_secret='+ app_key + '&code=' + code + '&refresh_token=' + refresh_token;
+  sails.log(url);
   return new Promise(function(resolve, reject){
    request(url, function(err, res, body){
     if(err){

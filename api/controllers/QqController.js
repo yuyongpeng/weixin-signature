@@ -8,6 +8,7 @@ function loginAction(req, res){
 }
 
 function callbackAction(req, res){
+  sails.log(req.body);
   return res.view('qqcallback',{userinfo: "test"});
 }
 

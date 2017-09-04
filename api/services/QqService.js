@@ -19,7 +19,7 @@ var getAccessToken = function (code) {
   var app_id = sails.config.thirdlogin.qq['nowness'].app_id;
   var app_key = sails.config.thirdlogin.qq['nowness'].app_key;
   var redirect_url = sails.config.thirdlogin.qq['nowness'].redirect_url;
-  var url = token_url + 'client_id=' + appid + '&client_secret='+ secret + '&code=' + code + '&redirect_url=' + redirect_url;
+  var url = token_url + 'client_id=' + app_id + '&client_secret='+ app_key + '&code=' + code + '&redirect_url=' + encodeURIComponent(redirect_url);
   sails.log(url);
   return new Promise(function (resolve, reject) {
     request(url, function (err, res, body) {

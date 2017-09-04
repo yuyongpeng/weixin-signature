@@ -19,7 +19,12 @@ var urlparams = function(params){
     var kv = val.split('=');
     var key = kv[0];
     var value = kv[1];
-    obj.key = value;
+    Object.defineProperty(obj, key, {
+      writable: false,
+      configurable: false,
+      value: value
+    })
+    //obj.key = value;
   });
   return obj;
 }

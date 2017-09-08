@@ -11,7 +11,9 @@ function loginAction(req, res){
 }
 
 function login2Action(req, res){
-  return res.view('qqlogin2',{});
+  var app_id = sails.config.thirdlogin.qq['nowness'].app_id;
+  var redirect_url = sails.config.thirdlogin.qq['nowness'].redirect_url;
+  return res.view('qqlogin2',{'app_id': app_id,'redirect_url': redirect_url});
 }
 function callbackAction(req, res){
   sails.log(req.query);

@@ -10,6 +10,9 @@ function loginAction(req, res){
   res.redirect(url)
 }
 
+function login2Action(req, res){
+  return res.view('qqlogin2',{});
+}
 function callbackAction(req, res){
   sails.log(req.query);
   var usercancel = req.query.usercancel;
@@ -51,5 +54,6 @@ function callbackAction(req, res){
 
 module.exports = {
     login: loginAction,
+    login2: login2Action,
     callback: callbackAction
 }

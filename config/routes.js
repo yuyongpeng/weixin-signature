@@ -58,9 +58,8 @@ module.exports.routes = {
     controller: 'Qq',
     action: 'login'
   },
-  'GET /qqlogin2': {
-    view: 'qqlogin'
-  },
+  'GET /qqlogin2': 'Qq.login2'
+  ,
   'GET /qqcallback': {
     controller: 'Qq',
     action: 'callback'

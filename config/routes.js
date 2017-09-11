@@ -63,6 +63,7 @@ module.exports.routes = {
   'GET /qqcallback': {
     controller: 'Qq',
     action: 'callback'
-  }
+  },
+  'GET /qiniuupload': 'Qiniu.uploadFile'
 
 };

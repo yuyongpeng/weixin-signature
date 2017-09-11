@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<body>
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</br>
+<form method="post" action="http://upload.qiniu.com/"
+enctype="multipart/form-data">
+ <input name="key" type="hidden" value="test.jpg" >
+ <input name="x:myVal" type="hidden" value="yyp">
+ <input name="token" type="hidden" value="<%= uploadToken %>">
+ <input name="file" type="file" />
+ <!-- input name="crc32" type="hidden" / -->
+ <input name="accept" type="hidden" />
+ <input type="submit" name="Submit" value="提交"/>
+</form>
+
+
+</body>
+</html>

@@ -3,6 +3,7 @@ var request = require('request');
 var moment = require('moment');
 var Sign = require('../Util/sign');
 var rp = require('request-promise');
+var errors = require('request-promise/errors');
 var Promise = require('bluebird');
 
 
@@ -18,31 +19,6 @@ var getAccessToken = function (appid, secret, code) {
     });
   });
 };
-
-var refreshToken = function(appid, refresh_token){
-  var url = refresh_url + '&appid=' + appid + '&refresh_token=' + refresh_token;
-  return new Promise(function(resolve, reject){
-   request(url, function(err, res, body){
-    if(err){
-      return reject(err);
-    }
-    resolve(JSON.parse(body));
-   });
-  });
-}
-
-var getUserInfo = function(token, appid){
-  var url = userinfo_url + 'access_token=' + token + '&openid=' + appid;
-  return new Promise(function(resolve,reject){
-    request(url, function(err, res, body){
-      if(err){
-        return reject(err);
-      }
-      resolve(JSON.parse(body))
-    });
-  });
-}
-
 /**
  * 获取brightcove的access_token
  */
@@ -51,8 +27,10 @@ function getAuthToken(){
   var client_id = sails.config.brightcove.accountOne.client_id;
   var client_secret = sails.config.brightcove.accountOne.client_secret;
   var police_key = sails.config.brightcove.accountOne.police_key;
-  var auth_string = new Buffer(client_id + ':' + client_secret, 'base64').toString().replace('\n','');
+  var access_token = '';
+  var auth_string = Buffer.from(client_id + ':' + client_secret).toString('base64');
   var options = {
+    method: 'POST',
     uri: 'https://oauth.brightcove.com/v3/access_token',
     qs: {
       "grant_type": "client_credentials"
@@ -60,21 +38,74 @@ function getAuthToken(){
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
       "Authorization": "Basic " + auth_string
-    }
+    },
+    json: true
   };
-  rp(options).then(function(repos){
-    sails.log(repos.access_token);
-  }).catch(function(err){
-    sails.log('xxxxxx');
-  })
-  return 'aa';
+  var p = new Promise(function(resolve, reject){
+    request(options, function(err, response,body){
+      if (err) {
+        return reject(err);
+      } else if (!(/^2/.test('' + response.statusCode))) { // Status Codes other than 2xx
+        return reject("return code not 2XX");
+      } else {
+        sails.log(body.access_token);
+        resolve(body.access_token);
+      }
+    });
+  });
+  return p;
 }
 
-function getVideoUrl(){
+function getVideoUrl(access_token, video_id){
+  var account_id = sails.config.brightcove.accountOne.account_id;
+  var client_id = sails.config.brightcove.accountOne.client_id;
+  var client_secret = sails.config.brightcove.accountOne.client_secret;
+  var police_key = sails.config.brightcove.accountOne.police_key;
+  var auth_string = Buffer.from(client_id + ':' + client_secret).toString('base64');
+  var options = {
+    method: 'GET',
+    uri: 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos/' + video_id + '/sources',
+    headers: {
+      "Authorization": "Bearer " + access_token
+    },
+    json: true
+  };
+  var p = new Promise(function(resolve, reject){
+    request(options, function(err, response, repos){
+      if (err) {
+        return reject(err);
+      } else if (!(/^2/.test('' + response.statusCode))) { // Status Codes other than 2xx
+        return reject("return code not 2XX");
+      } else {
+        var tmp_width = 0;
+        var tmp_src = '';
+        for (video in repos){
+          if (repos[video].hasOwnProperty('src') && ! repos[video].hasOwnProperty('stream_name') && (repos[video].container === 'MP4')){
+            var width = repos[video].width;
+            if (width >= tmp_width) {
+              tmp_src = repos[video].src;
+            }
+          }
+        }
+        sails.log('a: ' + tmp_src);
+        resolve(tmp_src);
+      }
+    });
+  });
+  return p;
+}
 
+function all(video_id){
+  getAuthToken().then(function(data){
+    return getVideoUrl(data, video_id);
+  }).then(function(data){
+    sails.log('b ' + data);
+    return data;
+  });
 }
 
 module.exports = {
+  all: all,
   getAuthToken: getAuthToken,
   getVideoUrl: getVideoUrl
 }

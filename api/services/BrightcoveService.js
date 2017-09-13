@@ -6,19 +6,6 @@ var rp = require('request-promise');
 var errors = require('request-promise/errors');
 var Promise = require('bluebird');
 
-
-var getAccessToken = function (appid, secret, code) {
-  var url = token_url + 'appid=' + appid + '&secret='+ secret + '&code=' + code;
-  sails.log(url);
-  return new Promise(function (resolve, reject) {
-    request(url, function (err, res, body) {
-      if (err) {
-        return reject(err);
-      }
-      resolve(JSON.parse(body));
-    });
-  });
-};
 /**
  * 获取brightcove的access_token
  */
@@ -48,7 +35,7 @@ function getAuthToken(){
       } else if (!(/^2/.test('' + response.statusCode))) { // Status Codes other than 2xx
         return reject("return code not 2XX");
       } else {
-        sails.log(body.access_token);
+        sails.log('access_token : ' + body.access_token);
         resolve(body.access_token);
       }
     });
@@ -75,6 +62,9 @@ function getVideoUrl(access_token, video_id){
       if (err) {
         return reject(err);
       } else if (!(/^2/.test('' + response.statusCode))) { // Status Codes other than 2xx
+        sails.log('fff: ' + account_id);
+        sails.log('fff: ' + video_id);
+        sails.log('statusCode : ' + response.statusCode);
         return reject("return code not 2XX");
       } else {
         var tmp_width = 0;

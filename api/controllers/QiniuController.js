@@ -1,9 +1,10 @@
 
 function uploadFile(req, res) {
   var uploadToken = QiniuService.getUploadToken();
-
+  var path = QiniuService.getPath();
   return res.view('qiniuupload', {
-    'uploadToken': uploadToken
+    'uploadToken': uploadToken,
+    'filePath': path
   })
 }
 

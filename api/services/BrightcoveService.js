@@ -49,9 +49,10 @@ function getVideoUrl(access_token, video_id){
   var client_secret = sails.config.brightcove.accountOne.client_secret;
   var police_key = sails.config.brightcove.accountOne.police_key;
   var auth_string = Buffer.from(client_id + ':' + client_secret).toString('base64');
+  var uri = 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos/' + video_id + '/sources';
   var options = {
     method: 'GET',
-    uri: 'https://cms.api.brightcove.com/v1/accounts/' + account_id + '/videos/' + video_id + '/sources',
+    uri: uri,
     headers: {
       "Authorization": "Bearer " + access_token
     },
@@ -62,10 +63,12 @@ function getVideoUrl(access_token, video_id){
       if (err) {
         return reject(err);
       } else if (!(/^2/.test('' + response.statusCode))) { // Status Codes other than 2xx
-        sails.log('fff: ' + account_id);
-        sails.log('fff: ' + video_id);
         sails.log('statusCode : ' + response.statusCode);
-        return reject("return code not 2XX");
+        if (response.statusCode == 404){
+          return reject({err:1,msg:uri + ' not found [404], it is possible that the video not exist.'});
+        }else{
+          return reject({err:2,msg:'stateCode: ' + string(response.statusCode) + ' , request brightcove response stateCode not 2XX.'});
+        }
       } else {
         var tmp_width = 0;
         var tmp_src = '';

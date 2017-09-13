@@ -24,7 +24,11 @@ function getVideoUrl(req, res){
     var qiniu_url = data.replace(old_domain, new_domain);
     res.status(302).redirect(qiniu_url);
     return data;
+  }).catch(function(data){
+    sails.log('x: ' + data);
+    res.set('Content-Type', 'application/json').send(200,JSON.stringify(data));
   });
+
 }
 
 module.exports = {

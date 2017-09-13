@@ -31,12 +31,12 @@ module.exports.routes = {
   * `assets` directory)                                                      *
   *                                                                          *
   ***************************************************************************/
-
   '/': {
     view: 'homepage'
   },
 
   '/api/sign': 'IndexController.getSign',
+  '/weixin/api/sign':'IndexController.getSign',
   /***************************************************************************
   *                                                                          *
   * Custom routes here...                                                    *
@@ -65,5 +65,5 @@ module.exports.routes = {
     action: 'callback'
   },
   'GET /qiniuupload': 'Qiniu.uploadFile',
-  'GET /getbrightcovevideo': 'Brightcove.getvideourl'
+
 };

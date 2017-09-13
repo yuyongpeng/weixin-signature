@@ -1,13 +1,14 @@
-
-
 module.exports.weixin = {
-  'wx7427963d2884fbac':{    // key  appid
-    secret: '0e5c387902457c50baa711ef08e25778',
-    url: 'http://testshare.nowness.com'
+  'wxbeb8766166a66f06':{    // key  appid
+    secret: '4c6be70b0ee134ea8212ac689fbea955',
+    url: 'https://cn.nowness.com'
   },
-  'wxb0def0bc73c04b72':{    // key  appid
-    secret: '',
-    url: 'http://test.weixin.bigertech.com'
+  'wxc5ff4f2ca20ac54d':{    // key  appid
+    secret: 'e762e4d34a847e7dae8aac202f9b4a34',
+    url: 'https://cn.nowness.com'
   },
-  // 更多的 app
+  'wx83842468eb6df8a8':{    // key  appid
+    secret: '9b26bb5e0b52201c5c8b090725c801f7',
+    url: 'http://live.bbwc.cn'
+  },
 }

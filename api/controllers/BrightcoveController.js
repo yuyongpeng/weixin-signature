@@ -1,4 +1,6 @@
 
+var url = require('url');
+
 function getVideoUrl(req, res){
   var account_id = sails.config.brightcove.accountOne.account_id;
   var client_id = sails.config.brightcove.accountOne.client_id;
@@ -14,15 +16,11 @@ function getVideoUrl(req, res){
     return BrightcoveService.getVideoUrl(data, video_id);
   }).then(function(data){
     sails.log('b ' + data);
+    var brightcove_url = new url(data);
+    
     res.status(302).redirect(data);
     return data;
   });
-
-
-  //sails.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-  //sails.log(access_token);
-  //sails.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-//  BrightcoveService.getVideoUrl(access_token, video_id);
 }
 
 module.exports = {

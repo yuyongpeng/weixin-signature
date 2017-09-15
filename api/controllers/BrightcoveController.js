@@ -22,7 +22,7 @@ function getVideoUrl(req, res){
     var new_domain = old_domain.replace(/\./g,'-').replace(/$/, '.nowness.com');
     sails.log(data.replace(old_domain, new_domain));
     var qiniu_url = data.replace(old_domain, new_domain);
-    res.status(302).redirect(qiniu_url);
+    res.status(302).redirect(qiniu_url.replace(/^http/,'https'));
     return data;
   }).catch(function(data){
     sails.log('x: ' + data);

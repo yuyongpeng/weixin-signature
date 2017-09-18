@@ -64,9 +64,9 @@ module.exports.routes = {
     controller: 'Qq',
     action: 'callback'
   },
-  'GET /qiniuupload': 'Qiniu.uploadFile',
+  'GET /video/qiniuupload': 'Qiniu.uploadFile',
   'GET /test': 'Qiniu.test',
-  'POST /nownessvideo': 'Qiniu.nownessvideo',
+  'POST /video/nownessvideo': 'Qiniu.nownessvideo',
 
   'GET /video/getbrightcovevideo': 'Brightcove.getvideourl'
 

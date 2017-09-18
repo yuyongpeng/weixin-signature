@@ -65,6 +65,10 @@ module.exports.routes = {
     action: 'callback'
   },
   'GET /qiniuupload': 'Qiniu.uploadFile',
+  'GET /test': 'Qiniu.test',
+  'POST /nownessvideo': 'Qiniu.nownessvideo',
+
   'GET /video/getbrightcovevideo': 'Brightcove.getvideourl'
+
 
 };

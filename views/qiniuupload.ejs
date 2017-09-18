@@ -44,7 +44,7 @@
             formData = new FormData();
             formData.append('token', token);
             formData.append('file', f);
-            formData.append('key', '<%= filePath %>'+f.name);
+            formData.append('key', '<%= filePath %>-'+f.name);
 
             var taking;
             xhr.upload.addEventListener("progress", function(evt) {
@@ -74,6 +74,12 @@
 
                 }
             };
+            xhr.onload = function(e) {
+                var retjson = JSON.parse(xhr.response);
+                if (xhr.status == 200) {
+                    $('#qiniufile').val(retjson.key);
+                }
+            };
             startDate = new Date().getTime();
             $("#progressbar").show();
             xhr.send(formData);
@@ -89,25 +95,72 @@
   </script>
 </head>
 <body>
- 
+ <form action="/nownessvideo" method="POST">
 <ul>
-        <input id="token" name="token" type="hidden" value="<%= uploadToken %>">
+        <input id="token" name="token" type="hidden" value="<%= uploadToken %>" />
+        <input id="qiniufile" name="qiniufile" type="hidden" value="" />
+    </li>
+    <li>
+        <label for="nownessid">NOWNESS id:</label>
+        <input id="nownessid" name="nownessid" class="ipt" type="input" />
+    </li>
+    <li>
+        <label for="title">NOWNESS账号:</label>
+        <input id="nownessname" name="nownessname" class="ipt" type="input" />
+    </li>
+    <li>
+        <label for="title">title:</label>
+        <input id="title" name="title" class="ipt" type="input" />
+    </li>
+    <li>
+        <label for="subtitle">副标题:</label>
+        <input id="subtitle" name="subtitle" class="ipt" type="input" />
+    </li>
+    <li>
+        <label for="category">分类:</label>
+            <select name="category">
+                    <option value ="1" selected="selected">文化</option>
+                    <option value ="2">美食与旅行</option>
+                    <option value="3">艺术与设计</option>
+                    <option value="4">音乐</option>
+                    <option value="5">时尚与美容</option>
+            </select>
+    </li>
+    <li>
+        <label for="keyword">关键字:</label>
+        <input id="keyword" name="keyword" class="ipt" type="input" />
+    </li>
+    <li>
+        <label for="email">邮箱:</label>
+        <input id="email" name="email" class="ipt" type="input" />
+    </li>
+    <li>
+        <label for="debut">首映:</label>
+        <label><input id="debut" name="debut" class="ipt" type="radio" value=1 checked/>是</label>
+        <label><input id="debut" name="debut" class="ipt" type="radio" value=0 />否</label>
+    </li>
+    <li>
+        <label for="extvideourl">视频连接:</label>
+        <input id="extvideourl" name="extvideourl" class="ipt" type="input" />
     </li>
     <li>
         <label for="bucket">视频文件:</label>
         <input id="file" name="file" class="ipt" type="file" />
-    </li>
-    <li>
-        <input id="btn_upload" type="button" value="提交">
-        <button>上传文件</button>
-        
        <script>
        $( "button" ).button();
        </script>
+        <button>上传文件</button>
+    </li>
+    <li>
+        <label for="content">内容:</label>
+        <textarea name="content" cols="30" rows="4"></textarea>
+    </li>
+    <li>
+        <input id="btn_upload" type="submit" value="提交">
     </li>
     <div id="progressbar"><div class="progress-label"></div></div>
 </ul>
-
+</form>
 
 </body>
 </html>

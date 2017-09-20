@@ -81,6 +81,7 @@ function nownessvideo(req, res) {
       res.negotiate(err);
       sails.log(err);
     }
+
     sails.log(ret);
     res.status(200);
     // return res.location('http://localhost:1337/video/qiniuupload');

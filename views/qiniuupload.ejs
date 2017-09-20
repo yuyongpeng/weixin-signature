@@ -1,166 +1,323 @@
 <!DOCTYPE html>
-<body>
-<head>
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
-  <script src="//apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
-  <script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
-  <link rel="stylesheet" href="jqueryui/style.css">
-  <style>
-  .ui-progressbar {
-    position: relative;
-  }
-  .progress-label {
-    position: absolute;
-    left: 50%;
-    top: 4px;
-    font-weight: bold;
-    text-shadow: 1px 1px 0 #fff;
-  }
-  </style>
-  <script>
-  $(document).ready(function() {
-    $("#progressbar").hide();
-    var Qiniu_UploadUrl = "http://up.qiniu.com";
-    var progressbar = $("#progressbar"),
-        progressLabel = $(".progress-label");
-    progressbar.progressbar({
-        value: false,
-        change: function() {
-            progressLabel.text(progressbar.progressbar("value") + "%");
-        },
-        complete: function() {
-            progressLabel.text("Complete!");
-        }
-    });
-    $("button").click(function() {
-    //$("#btn_upload").click(function() {
-        $("#progressbar").show();
-        //普通上传
-        var Qiniu_upload = function(f, token) {
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', Qiniu_UploadUrl, true);
-            var formData, startDate;
-            formData = new FormData();
-            formData.append('token', token);
-            formData.append('file', f);
-            formData.append('key', '<%= filePath %>-'+f.name);
 
-            var taking;
-            xhr.upload.addEventListener("progress", function(evt) {
-                if (evt.lengthComputable) {
-                    var nowDate = new Date().getTime();
-                    taking = nowDate - startDate;
-                    var x = (evt.loaded) / 1024;
-                    var y = taking / 1000;
-                    var uploadSpeed = (x / y);
-                    var formatSpeed;
-                    if (uploadSpeed > 1024) {
-                        formatSpeed = (uploadSpeed / 1024).toFixed(2) + "Mb\/s";
-                    } else {
-                        formatSpeed = uploadSpeed.toFixed(2) + "Kb\/s";
+<body>
+
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="https://cdn.bootcss.com/jqueryui/1.11.1/jquery-ui.min.css" />
+        <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+        <script src="https://cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/additional-methods.js"></script>
+        <style>
+            .ui-progressbar {
+                position: relative;
+            }
+
+            .progress-label {
+                position: absolute;
+                left: 50%;
+                top: 4px;
+                font-weight: bold;
+                text-shadow: 1px 1px 0 #fff;
+            }
+        </style>
+        <script>
+            $(document).ready(function () {
+                $("#progressbar").hide();
+                var Qiniu_UploadUrl = "http://up.qiniu.com";
+                var progressbar = $("#progressbar"),
+                    progressLabel = $(".progress-label");
+                progressbar.progressbar({
+                    value: false,
+                    change: function () {
+                        progressLabel.text(progressbar.progressbar("value") + "%");
+                    },
+                    complete: function () {
+                        progressLabel.text("Complete!");
                     }
-                    var percentComplete = Math.round(evt.loaded * 100 / evt.total);
-                    progressbar.progressbar("value", percentComplete);
-                    // console && console.log(percentComplete, ",", formatSpeed);
-                }
-            }, false);
-            xhr.onreadystatechange = function(response) {
-                if (xhr.readyState == 4 && xhr.status == 200 && xhr.responseText != "") {
-                    var blkRet = JSON.parse(xhr.responseText);
-                    console && console.log(blkRet);
-                    $("#dialog").html(xhr.responseText).dialog();
-                } else if (xhr.status != 200 && xhr.responseText) {
+                });
+                $("#button").click(function () {
+                    //$("#btn_upload").click(function() {
+                    $("#progressbar").show();
+                    //普通上传
+                    var Qiniu_upload = function (f, token) {
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('POST', Qiniu_UploadUrl, true);
+                        var formData, startDate;
+                        formData = new FormData();
+                        formData.append('token', token);
+                        formData.append('file', f);
+                        formData.append('key', '<%= filePath %>-' + f.name);
 
-                }
-            };
-            xhr.onload = function(e) {
-                var retjson = JSON.parse(xhr.response);
-                if (xhr.status == 200) {
-                    $('#qiniufile').val(retjson.key);
-                }
-            };
-            startDate = new Date().getTime();
-            $("#progressbar").show();
-            xhr.send(formData);
-        };
-        var token = $("#token").val();
-        if ($("#file")[0].files.length > 0 && token != "") {
-            Qiniu_upload($("#file")[0].files[0], token);
-        } else {
-            console && console.log("form input error");
-        }
-    })
-})
-  </script>
-</head>
-<body>
- <form action="/video/nownessvideo" method="POST">
-<ul>
-        <input id="token" name="token" type="hidden" value="<%= uploadToken %>" />
-        <input id="qiniufile" name="qiniufile" type="hidden" value="" />
-    </li>
-    <li>
-        <label for="nownessid">NOWNESS id:</label>
-        <input id="nownessid" name="nownessid" class="ipt" type="input" />
-    </li>
-    <li>
-        <label for="title">NOWNESS账号:</label>
-        <input id="nownessname" name="nownessname" class="ipt" type="input" />
-    </li>
-    <li>
-        <label for="title">title:</label>
-        <input id="title" name="title" class="ipt" type="input" />
-    </li>
-    <li>
-        <label for="subtitle">副标题:</label>
-        <input id="subtitle" name="subtitle" class="ipt" type="input" />
-    </li>
-    <li>
-        <label for="category">分类:</label>
-            <select name="category">
-                    <option value ="1" selected="selected">文化</option>
-                    <option value ="2">美食与旅行</option>
-                    <option value="3">艺术与设计</option>
-                    <option value="4">音乐</option>
-                    <option value="5">时尚与美容</option>
-            </select>
-    </li>
-    <li>
-        <label for="keyword">关键字:</label>
-        <input id="keyword" name="keyword" class="ipt" type="input" />
-    </li>
-    <li>
-        <label for="email">邮箱:</label>
-        <input id="email" name="email" class="ipt" type="input" />
-    </li>
-    <li>
-        <label for="debut">首映:</label>
-        <label><input id="debut" name="debut" class="ipt" type="radio" value=1 checked/>是</label>
-        <label><input id="debut" name="debut" class="ipt" type="radio" value=0 />否</label>
-    </li>
-    <li>
-        <label for="extvideourl">视频连接:</label>
-        <input id="extvideourl" name="extvideourl" class="ipt" type="input" />
-    </li>
-    <li>
-        <label for="bucket">视频文件:</label>
-        <input id="file" name="file" class="ipt" type="file" />
-       <script>
-       $( "button" ).button();
-       </script>
-        <button>上传文件</button>
-    </li>
-    <li>
-        <label for="content">内容:</label>
-        <textarea name="content" cols="30" rows="4"></textarea>
-    </li>
-    <li>
-        <input id="btn_upload" type="submit" value="提交">
-    </li>
-    <div id="progressbar"><div class="progress-label"></div></div>
-</ul>
-</form>
+                        var taking;
+                        xhr.upload.addEventListener("progress", function (evt) {
+                            if (evt.lengthComputable) {
+                                var nowDate = new Date().getTime();
+                                taking = nowDate - startDate;
+                                var x = (evt.loaded) / 1024;
+                                var y = taking / 1000;
+                                var uploadSpeed = (x / y);
+                                var formatSpeed;
+                                if (uploadSpeed > 1024) {
+                                    formatSpeed = (uploadSpeed / 1024).toFixed(2) + "Mb\/s";
+                                } else {
+                                    formatSpeed = uploadSpeed.toFixed(2) + "Kb\/s";
+                                }
+                                var percentComplete = Math.round(evt.loaded * 100 / evt.total);
+                                progressbar.progressbar("value", percentComplete);
+                                // console && console.log(percentComplete, ",", formatSpeed);
+                            }
+                        }, false);
+                        xhr.onreadystatechange = function (response) {
+                            if (xhr.readyState == 4 && xhr.status == 200 && xhr.responseText != "") {
+                                var blkRet = JSON.parse(xhr.responseText);
+                                console && console.log(blkRet);
+                                $("#dialog").html(xhr.responseText).dialog();
+                            } else if (xhr.status != 200 && xhr.responseText) {
 
-</body>
-</html>
+                            }
+                        };
+                        xhr.onload = function (e) {
+                            var retjson = JSON.parse(xhr.response);
+                            if (xhr.status == 200) {
+                                $('#qiniufile').val(retjson.key);
+                            }
+                        };
+                        startDate = new Date().getTime();
+                        $("#progressbar").show();
+                        xhr.send(formData);
+                    };
+                    var token = $("#token").val();
+                    if ($("#file")[0].files.length > 0 && token != "") {
+                        Qiniu_upload($("#file")[0].files[0], token);
+                    } else {
+                        console && console.log("form input error");
+                    }
+                })
+            })
+        </script>
+        <style type="text/css">
+            em.error {
+                margin-left: 10px;
+                color: red;
+                background: url("http://www.runoob.com/try/jquery/plugins/images/unchecked.gif") no-repeat 0px 0px;
+                padding-left: 16px;
+            }
+
+            em.success {
+                background: url("http://www.runoob.com/try/jquery/plugins/images/checked.gif") no-repeat 0px 0px;
+                padding-left: 16px;
+            }
+
+            .MyError {
+                padding: 2px 2px;
+                background-color: yellow;
+                color: #333;
+                border: 1px solid orange;
+                vertical-align: middle
+            }
+        </style>
+
+        <script type="text/javascript">
+            $.extend($.validator.messages, {
+                required: "必填字段",
+                remote: "请修正该字段",
+                email: "请输入正确格式的电子邮件",
+                url: "请输入合法的网址",
+                date: "请输入合法的日期",
+                dateISO: "请输入合法的日期 (ISO).",
+                number: "请输入合法的数字",
+                digits: "只能输入整数",
+                creditcard: "请输入合法的信用卡号",
+                equalTo: "请再次输入相同的值",
+                accept: "请输入拥有合法后缀名的字符串",
+                maxlength: $.validator.format("请输入一个长度最多是 {0} 的字符串"),
+                minlength: $.validator.format("请输入一个长度最少是 {0} 的字符串"),
+                rangelength: $.validator.format("请输入一个长度介于 {0} 和 {1} 之间的字符串"),
+                range: $.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
+                max: $.validator.format("请输入一个最大为 {0} 的值"),
+                min: $.validator.format("请输入一个最小为 {0} 的值")
+            });
+            $(function () {
+                //让当前表单调用validate方法，实现表单验证功能
+                $("form").validate({
+                    debug: false, //调试模式，即使验证成功也不会跳转到目标页面
+                    errorElement: "em",
+                    rules: {     //配置验证规则，key就是被验证的dom对象，value就是调用验证的方法(也是json格式)
+                        title: {
+                            required: true  //必填。如果验证方法不需要参数，则配置为true
+                        },
+                        email: {
+                            email: true
+                        }
+                    },
+                    //                success: function (em) { em.parents("em").remove(); }
+                    success: function (label) {
+                        // set &nbsp; as text for IE
+                        label.addClass("sucess");
+                        //                        label.html("&nbsp;").addClass("checked");
+                    },
+                });
+            });
+        </script>
+    </head>
+
+    <body>
+        <style>
+            * {
+                padding: 0;
+                margin: 0;
+                border: 0;
+                list-style: none;
+            }
+
+            form {
+                width: 700px;
+                padding: 20px;
+                height: auto;
+                overflow: hidden;
+                margin: 0 auto;
+            }
+
+            form li {
+                padding: 15px 0;
+                font-size: 0;
+                line-height: 0;
+            }
+
+            form li * {
+                font-size: 14px;
+                line-height: 21px;
+                vertical-align: top;
+            }
+
+            form li label {
+                display: inline-block;
+                width: 160px;
+                vertical-align: middle;
+            }
+
+            .ipt[type='input'],
+            select {
+                width: 300px;
+                height: 24px;
+                line-height: 24px;
+                border: 1px solid #e8e8e8;
+                padding: 0 4px;
+                outline: none;
+            }
+
+            select {
+                width: 310px;
+            }
+
+            .ipt[type='radio'] {
+                margin-right: 20px;
+            }
+
+            textarea {
+                outline: none;
+                border: 1px solid #e8e8e8;
+                width: 300px;
+                height: auto;
+                overflow-y: auto;
+                resize: none;
+            }
+
+            li #button,
+            #btn_upload {
+                cursor: pointer;
+                background: #29ae8f;
+                color: #fff;
+                padding: 4px 10px;
+                border-radius: 15px;
+                box-shadow: 0 0 2px #3c9f8d;
+            }
+
+            #btn_upload {
+                padding: 4px 20px;
+            }
+
+            .sub_area {
+                text-align: center;
+                margin-top: 30px;
+            }
+
+            .ui-widget-content {
+                height: 30px;
+            }
+        </style>
+        <form action="/video/nownessvideo" method="POST">
+            <ul>
+                <input id="token" name="token" type="hidden" value="<%= uploadToken %>" />
+                <input id="qiniufile" name="qiniufile" type="hidden" value="" />
+                </li>
+                <li>
+                    <label for="nownessid">NOWNESS id:</label>
+                    <input id="nownessid" name="nownessid" class="ipt" type="input" />
+                </li>
+                <li>
+                    <label for="title">NOWNESS账号:</label>
+                    <input id="nownessname" name="nownessname" class="ipt" type="input" />
+                </li>
+                <li>
+                    <label for="title">title:</label>
+                    <input id="title" name="title" class="ipt" type="input" />
+                </li>
+                <li>
+                    <label for="subtitle">副标题:</label>
+                    <input id="subtitle" name="subtitle" class="ipt" type="input" />
+                </li>
+                <li>
+                    <label for="category">分类:</label>
+                    <select name="category">
+                        <option value ="1" selected="selected">文化</option>
+                        <option value ="2">美食与旅行</option>
+                        <option value="3">艺术与设计</option>
+                        <option value="4">音乐</option>
+                        <option value="5">时尚与美容</option>
+                </select>
+                </li>
+                <li>
+                    <label for="keyword">关键字:</label>
+                    <input id="keyword" name="keyword" class="ipt" type="input" />
+                </li>
+                <li>
+                    <label for="email">邮箱:</label>
+                    <input id="email" name="email" class="ipt" type="input" />
+                </li>
+                <li>
+                    <label for="debut">首映:</label>
+                    <label><input id="debut" name="debut" class="ipt" type="radio" value=1 checked/>是</label>
+                    <label><input id="debut" name="debut" class="ipt" type="radio" value=0 />否</label>
+                </li>
+                <li>
+                    <label for="extvideourl">视频连接:</label>
+                    <input id="extvideourl" name="extvideourl" class="ipt" type="input" />
+                </li>
+                <li>
+                    <label for="bucket">视频文件:</label>
+                    <input id="file" name="file" class="ipt" type="file" accept="video/*" />
+                    <span id="button">上传文件</span>
+
+                </li>
+                <li style="height:30px">
+                    <div id="progressbar">
+                        <div class="progress-label"></div>
+                    </div>
+                </li>
+                <li>
+                    <label for="content">内容:</label>
+                    <textarea name="content" cols="30" rows="4"></textarea>
+                </li>
+                <li class="sub_area">
+                    <input id="btn_upload" type="submit" value="提交">
+                </li>
+
+            </ul>
+        </form>
+
+    </body>
+
+    </html>

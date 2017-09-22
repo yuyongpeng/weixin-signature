@@ -43,8 +43,8 @@ function test(req, res) {
  * @param {*} res 
  */
 function nownessvideo(req, res) {
+  sails.log('fffffff');
   var domain = 'qiniu.nowness.cn';
-  var nownessid = req.body.nownessid || 0;
   var nownessname = req.body.nownessname;
   var title = req.body.title;
   var qiniufile = req.body.qiniufile;
@@ -63,7 +63,6 @@ function nownessvideo(req, res) {
   sails.log(qiniufile);
   sails.log(debut);
   var videofile = {
-    nownessid: nownessid,
     nownessname: nownessname,
     title: title,
     subtitle: subtitle,

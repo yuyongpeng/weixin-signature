@@ -66,7 +66,7 @@ module.exports.routes = {
   },
   'GET /video/qiniuupload': 'Qiniu.uploadFile',
   'GET /test': 'Qiniu.test',
-  'POST /video/nownessvoideo': 'Qiniu.nownessvideo',
+  'POST /video/nownessvideo': 'Qiniu.nownessvideo',
   '/video/listvideos':{
     view: 'listvideos'
   },

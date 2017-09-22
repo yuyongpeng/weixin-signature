@@ -36,7 +36,7 @@ module.exports.routes = {
   },
 
   '/api/sign': 'IndexController.getSign',
-  '/weixin/api/sign':'IndexController.getSign',
+  '/weixin/api/sign': 'IndexController.getSign',
   /***************************************************************************
   *                                                                          *
   * Custom routes here...                                                    *
@@ -66,9 +66,19 @@ module.exports.routes = {
   },
   'GET /video/qiniuupload': 'Qiniu.uploadFile',
   'GET /test': 'Qiniu.test',
-  'POST /video/nownessvideo': 'Qiniu.nownessvideo',
+  'POST /video/nownessvoideo': 'Qiniu.nownessvideo',
+  '/video/listvideos':{
+    view: 'listvideos'
+  },
 
-  'GET /video/getbrightcovevideo': 'Brightcove.getvideourl'
+  'GET /video/getbrightcovevideo': 'Brightcove.getvideourl',
 
-
+  'get /loginvideo': {
+    view: 'login'
+  },
+  'post /login': 'AuthController.login',
+  '/logout': 'AuthController.logout',
+  'get /signup': {
+    view: 'signup'
+  }
 };

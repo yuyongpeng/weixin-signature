@@ -8,42 +8,13 @@ function uploadFile(req, res) {
   })
 }
 
-function test(req, res) {
-  //sails.models.category.find().exec(function(err, all){
-  //  Category.find().exec(function(err, all){
-  //   if (err)
-  //      sails.log(err);
-  //    sails.log(all);
-  //  });
-  var category1 = {
-    name: 'test1',
-    lang: 'cn'
-  };
-  Category.create(category1).exec(function (err, finn) {
-    if (err)
-      sails.log(err);
-    sails.log(finn);
-  });
-  Category.find({ id: 33 }).exec(function (err, all) {
-    sails.log(all);
-    all[0].name = 'test222222';
-    sails.log(all[0]);
-    Category.update({ id: all[0].id }, all[0]).exec(function (err, finn) {
-      if (err)
-        sails.log(err);
-      sails.log(finn);
-    });
-  });
-  return res.ok();
-}
-
 /**
  * 获取视频信息存入数据库中
  * @param {*} req 
  * @param {*} res 
  */
 function nownessvideo(req, res) {
-  var domain = 'qiniu.nowness.cn';
+  var domain = '7xpvul.com2.z0.glb.qiniucdn.com';
   var nownessid = req.body.nownessid || 0;
   var nownessname = req.body.nownessname;
   var title = req.body.title;
@@ -93,6 +64,5 @@ function nownessvideo(req, res) {
 
 module.exports = {
   uploadFile: uploadFile,
-  nownessvideo: nownessvideo,
-  test: test
+  nownessvideo: nownessvideo
 }

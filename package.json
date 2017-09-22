@@ -29,7 +29,10 @@
     "sails": "~0.11.0",
     "sails-disk": "~0.10.0",
     "sails-mysql": "^0.11.5",
-    "underscore": "~1.8.3"
+    "underscore": "~1.8.3",
+    "bcrypt": "~0.8.0",
+    "passport": "~0.2.1",
+    "passport-local": "~1.0.0"
   },
   "scripts": {
     "debug": "node debug app.js",

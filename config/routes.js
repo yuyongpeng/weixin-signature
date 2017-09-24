@@ -70,6 +70,8 @@ module.exports.routes = {
   '/video/listvideos':{
     view: 'listvideos'
   },
+  'GET /video/listv': 'List.listvideo',
+  'GET /video/deletev': 'List.deletevideo',
 
   'GET /video/getbrightcovevideo': 'Brightcove.getvideourl',
 

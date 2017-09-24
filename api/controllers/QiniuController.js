@@ -43,7 +43,6 @@ function test(req, res) {
  * @param {*} res 
  */
 function nownessvideo(req, res) {
-  sails.log('fffffff');
   var domain = 'qiniu.nowness.cn';
   var nownessname = req.body.nownessname;
   var title = req.body.title;
@@ -79,6 +78,7 @@ function nownessvideo(req, res) {
     if (err) {
       res.negotiate(err);
       sails.log(err);
+      return res.status(200).send('失败<a href="/video/qiniuupload">返回</a>');
     }
 
     sails.log(ret);

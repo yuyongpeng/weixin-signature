@@ -50,7 +50,16 @@ function nownessvideo(req, res) {
           var obj = {};
           obj['id'] = val['id'];
           obj['nownessname'] = val['nownessname'];
+
           obj['title'] = '<a target=_blank href="'+val['url']+'">' + val['title'] + '</a>';
+          obj['subtitle'] = val['subtitle'];
+          obj['keyword'] = val['keyword'];
+          obj['email'] = val['email'];
+          obj['extvideourl'] = val['extvideourl'];
+          obj['content'] = val['content'];
+          obj['inserttime'] = val['inserttime'];
+          obj['updatetime'] = val['updatetime'];
+
           obj['category'] = '文化';
           switch(val['category']){
             case 1:

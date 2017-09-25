@@ -16,7 +16,65 @@
                 var title = $(this).text();
                 $(this).html('<input type="text" placeholder="Search ' + title + '" />');
             });
-
+            /* Formatting function for row details - modify as you need */
+            function format(d) {
+                // `d` is the original data object for the row
+                return '<table cellpadding="13" cellspacing="0" border="0" class=display>' +
+                    //return '<table cellpadding="13" cellspacing="0" border="0" class=display style="padding-left:50px;">' +
+                    '<tr>' +
+                    '<td>id:</td>' +
+                    '<td>' + d.id + '</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td>nowness账号:</td>' +
+                    '<td>' + d.nownessname + '</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td>标题:</td>' +
+                    '<td>' + d.title + '</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td>子标题:</td>' +
+                    '<td>' + d.subtitle + '</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td>分类:</td>' +
+                    '<td>' + d.category + '</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td>关键词:</td>' +
+                    '<td>' + d.keyword + '</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td>邮箱:</td>' +
+                    '<td>' + d.email + '</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td>首映:</td>' +
+                    '<td>' + d.debut + '</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td>上传的视频文件:</td>' +
+                    '<td>' + d.url + '</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td>外站的视频链接:</td>' +
+                    '<td>' + d.extvideourl + '</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td>内容:</td>' +
+                    '<td>' + d.content + '</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td>插入时间:</td>' +
+                    '<td>' + d.inserttime + '</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td>更新时间:</td>' +
+                    '<td>' + d.updatetime + '</td>' +
+                    '</tr>' +
+                    '</table>';
+            }
             var table = $('#example').DataTable({
                 "bProcessing": true,       //加载数据时显示正在加载信息   
                 "bServerSide": true,      //指定从服务器端获取数据  
@@ -50,6 +108,12 @@
                 }, //多语言配置
                 //data: data2,
                 columns: [
+                    {
+                        "className": 'details-control',
+                        "orderable": false,
+                        "data": null,
+                        "defaultContent": ''
+                    },
                     { data: 'id' },
                     { data: 'nownessname' },
                     { data: 'title' },
@@ -58,7 +122,7 @@
                 ],
                 columnDefs: [
                     {
-                        "targets": [0],
+                        "targets": [1],
                         "visible": false,
                         "searchable": false
                     }
@@ -87,7 +151,23 @@
                     $(this).addClass('selected');
                 }
             });
-                
+            // Add event listener for opening and closing details
+            $('#example tbody').on('click', 'td.details-control', function () {
+                var tr = $(this).closest('tr');
+                var row = table.row(tr);
+
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    row.child.hide();
+                    tr.removeClass('shown');
+                }
+                else {
+                    // Open this row
+                    row.child(format(row.data())).show();
+                    tr.addClass('shown');
+                }
+            });
+
             $('#button').click(function () {
                 //alert(table.row('.selected'));
                 var k = table.rows('.selected').data();
@@ -126,6 +206,16 @@
             });
         });
     </script>
+    <style>
+        td.details-control {
+            background: url('/details_open.png') no-repeat center center;
+            cursor: pointer;
+        }
+
+        tr.shown td.details-control {
+            background: url('/details_close.png') no-repeat center center;
+        }
+    </style>
 
     <body>
         <button id="button">delete</button>
@@ -133,6 +223,7 @@
         <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
             <thead>
                 <tr>
+                    <th></th>
                     <th>id</th>
                     <th>nowness账号</th>
                     <th>标题</th>
@@ -142,6 +233,7 @@
             </thead>
             <tfoot>
                 <tr>
+                    <th></th>
                     <th>id</th>
                     <th>nowness账号</th>
                     <th>标题</th>

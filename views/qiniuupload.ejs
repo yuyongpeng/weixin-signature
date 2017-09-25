@@ -146,7 +146,7 @@
             $(function () {
                 //让当前表单调用validate方法，实现表单验证功能
                 $("form").validate({
-                    debug: true, //调试模式，即使验证成功也不会跳转到目标页面
+                    debug: false, //调试模式，即使验证成功也不会跳转到目标页面
                     errorElement: "em",
                     rules: {     //配置验证规则，key就是被验证的dom对象，value就是调用验证的方法(也是json格式)
                         title: {

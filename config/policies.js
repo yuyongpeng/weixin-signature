@@ -50,8 +50,8 @@ module.exports.policies = {
   // }
   
   'ListController': {
-    //'*': 'isAuthenticated'
-    '*': true
+    '*': 'isAuthenticated'
+    //'*': true
   },
 
 };

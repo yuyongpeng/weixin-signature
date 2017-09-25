@@ -7,11 +7,10 @@
  * @docs        :: http://sailsjs.org/#!/documentation/concepts/Policies
  *
  */
-module.exports = function(req, res, next) {
-  if (req.isAuthenticated()) {
-       return next();
-   }
-   else{
-       return res.redirect('/login');
-   }
+module.exports = function (req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    } else {
+        return res.redirect('/video/loginvideo');
+    }
 };

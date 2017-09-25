@@ -75,11 +75,11 @@ module.exports.routes = {
 
   'GET /video/getbrightcovevideo': 'Brightcove.getvideourl',
 
-  'get /loginvideo': {
+  'get /video/loginvideo': {
     view: 'login'
   },
-  'post /login': 'AuthController.login',
-  '/logout': 'AuthController.logout',
+  'post /video/login': 'AuthController.login',
+  '/video/logout': 'AuthController.logout',
   'get /signup': {
     view: 'signup'
   }

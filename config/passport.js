@@ -17,13 +17,12 @@ passport.use(new LocalStrategy({
   passwordField: 'password'
 },
   function (email, password, done) {
-
-    User.findOne({ email: email }, function (err, user) {
+    User.findOne({ email: email }).exec(function (err, user) {
       if (err) { return done(err); }
       if (!user) {
         return done(null, false, { message: 'Incorrect email.' });
       }
-
+      // bcrypt 异步方式
       bcrypt.compare(password, user.password, function (err, res) {
         if (!res)
           return done(null, false, {
@@ -31,7 +30,7 @@ passport.use(new LocalStrategy({
           });
         var returnUser = {
           email: user.email,
-          createdAt: user.createdAt,
+          createdAt: user.inserttime,
           id: user.id
         };
         return done(null, returnUser, {

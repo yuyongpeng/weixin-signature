@@ -1,6 +1,6 @@
 var passport = require('passport');
-module.exports = {
 
+module.exports = {
   _config: {
     actions: false,
     shortcuts: false,
@@ -8,8 +8,8 @@ module.exports = {
   },
 
   login: function (req, res) {
-
     passport.authenticate('local', function (err, user, info) {
+      sails.log(user);
       if ((err) || (!user)) {
         return res.send({
           message: info.message,
@@ -18,10 +18,11 @@ module.exports = {
       }
       req.logIn(user, function (err) {
         if (err) res.send(err);
-        return res.send({
+        return res.redirect('/video/listvideos');
+        /*return res.send({
           message: info.message,
           user: user
-        });
+        });*/
       });
 
     })(req, res);
@@ -29,6 +30,6 @@ module.exports = {
 
   logout: function (req, res) {
     req.logout();
-    res.redirect('/');
+    res.redirect('/video/loginvideo');
   }
 };

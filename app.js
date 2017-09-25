@@ -21,7 +21,10 @@
 // Ensure we're in the project directory, so relative paths work as expected
 // no matter where we actually lift from.
 process.chdir(__dirname);
-
+var bcrypt = require('bcrypt');
+var salt = bcrypt.genSaltSync(10);
+var hash = bcrypt.hashSync('NowNess23', salt);
+console.log(hash);
 // Ensure a "sails" can be located:
 (function() {
   var sails;

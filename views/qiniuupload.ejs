@@ -140,22 +140,30 @@
                 max: $.validator.format("请输入一个最大为 {0} 的值"),
                 min: $.validator.format("请输入一个最小为 {0} 的值")
             });
+            jQuery.validator.addMethod("check", function () {
+                return $("#qiniufile").val() != "" || $("#extvideourl").val() != "";
+            }, "必须上传一个文件，或者输入一个url！");
             $(function () {
                 //让当前表单调用validate方法，实现表单验证功能
                 $("form").validate({
-                    debug: false, //调试模式，即使验证成功也不会跳转到目标页面
+                    debug: true, //调试模式，即使验证成功也不会跳转到目标页面
                     errorElement: "em",
                     rules: {     //配置验证规则，key就是被验证的dom对象，value就是调用验证的方法(也是json格式)
                         title: {
                             required: true  //必填。如果验证方法不需要参数，则配置为true
                         },
                         email: {
+                            required: true,
                             email: true
+                        },
+                        extvideourl: {
+                            check: true
                         }
                     },
                     //                success: function (em) { em.parents("em").remove(); }
                     success: function (label) {
                         // set &nbsp; as text for IE
+                        label.removeClass("error");
                         label.addClass("sucess");
                         //                        label.html("&nbsp;").addClass("checked");
                     },

@@ -1,4 +1,21 @@
 {
-  "Welcome": "Bienvenido",
-  "A brand new app.": "Una aplicación de la nueva marca."
+  "nownessid": "NOWNESS ID",
+  "title": "Title",
+  "subtitle": "Subtitle",
+  "category": "Category",
+  "email": "Email",
+  "debut": "Debut",
+  "keywords": "Keywords",
+  "video link": "Video Link",
+  "choose from file": "Choose From File",
+  "upload video file": "Upload Video File",
+  "contents": "Contents",
+  "yes": "Yes",
+  "no": "No",
+  "submit": "Submit",
+  "culture": "Culture",
+  "food & travel": "Food & Travel",
+  "art & design": "Art & Design",
+  "music": "Music",
+  "fashion & beauty": "Fashion & Beauty"
 }

@@ -122,10 +122,10 @@
 
         <script type="text/javascript">
             $.extend($.validator.messages, {
-                required: "必填字段",
+                required: "必填字段/Required",
                 remote: "请修正该字段",
                 email: "请输入正确格式的电子邮件",
-                url: "请输入合法的网址",
+                url: "请输入合法的网址/Please enter a legal URL",
                 date: "请输入合法的日期",
                 dateISO: "请输入合法的日期 (ISO).",
                 number: "请输入合法的数字",
@@ -142,7 +142,7 @@
             });
             jQuery.validator.addMethod("check", function () {
                 return $("#qiniufile").val() != "" || $("#extvideourl").val() != "";
-            }, "必须上传一个文件，或者输入一个url！");
+            }, "必须上传一个文件，或者输入一个url！/You must upload a video file, or enter a URL");
             $(function () {
                 //让当前表单调用validate方法，实现表单验证功能
                 $("form").validate({
@@ -158,6 +158,9 @@
                         },
                         extvideourl: {
                             check: true
+                        },
+                        extvideourl: {
+                            url: true
                         }
                     },
                     //                success: function (em) { em.parents("em").remove(); }
@@ -203,7 +206,7 @@
 
             form li label {
                 display: inline-block;
-                width: 160px;
+                width: 200px;
                 vertical-align: middle;
             }
 
@@ -237,7 +240,7 @@
             li #button,
             #btn_upload {
                 cursor: pointer;
-                background: #29ae8f;
+                background: #3b98fd;
                 color: #fff;
                 padding: 4px 10px;
                 border-radius: 15px;
@@ -257,54 +260,55 @@
                 height: 30px;
             }
         </style>
+        <!-- <%= __('title')%> -->
         <form action="/video/nownessvideo" method="POST">
             <ul>
                 <input id="token" name="token" type="hidden" value="<%= uploadToken %>" />
                 <input id="qiniufile" name="qiniufile" type="hidden" value="" />
                 </li>
                 <li>
-                    <label for="title">NOWNESS账号:</label>
+                    <label for="title">NOWNESS账号/NOWNESS ID:</label>
                     <input id="nownessname" name="nownessname" class="ipt" type="input" />
                 </li>
                 <li>
-                    <label for="title">title:</label>
+                    <label for="title">标题/Title:</label>
                     <input id="title" name="title" class="ipt" type="input" />
                 </li>
                 <li>
-                    <label for="subtitle">副标题:</label>
+                    <label for="subtitle">副标题/Subtitle:</label>
                     <input id="subtitle" name="subtitle" class="ipt" type="input" />
                 </li>
                 <li>
-                    <label for="category">分类:</label>
+                    <label for="category">分类/Category:</label>
                     <select name="category">
-                        <option value ="1" selected="selected">文化</option>
-                        <option value ="2">美食与旅行</option>
-                        <option value="3">艺术与设计</option>
-                        <option value="4">音乐</option>
-                        <option value="5">时尚与美容</option>
+                        <option value ="1" selected="selected">文化/Culture</option>
+                        <option value ="2">美食与旅行/Food & Travel</option>
+                        <option value="3">艺术与设计/Art & Design</option>
+                        <option value="4">音乐/Music</option>
+                        <option value="5">时尚与美容/Fashion & Beauty</option>
                 </select>
                 </li>
                 <li>
-                    <label for="keyword">关键字:</label>
+                    <label for="keyword">关键字/Keywords:</label>
                     <input id="keyword" name="keyword" class="ipt" type="input" />
                 </li>
                 <li>
-                    <label for="email">邮箱:</label>
+                    <label for="email">邮箱/Email:</label>
                     <input id="email" name="email" class="ipt" type="input" />
                 </li>
                 <li>
-                    <label for="debut">首映:</label>
-                    <label><input id="debut" name="debut" class="ipt" type="radio" value=1 checked/>是</label>
-                    <label><input id="debut" name="debut" class="ipt" type="radio" value=0 />否</label>
+                    <label for="debut">首映/Debut:</label>
+                    <label><input id="debut" name="debut" class="ipt" type="radio" value=1 checked/>是/Yes</label>
+                    <label><input id="debut" name="debut" class="ipt" type="radio" value=0 />否/No</label>
                 </li>
                 <li>
-                    <label for="extvideourl">视频连接:</label>
+                    <label for="extvideourl">视频连接/Video link:</label>
                     <input id="extvideourl" name="extvideourl" class="ipt" type="input" />
                 </li>
                 <li>
-                    <label for="bucket">视频文件:</label>
+                    <label for="bucket">视频文件/Choose from file:</label>
                     <input id="file" name="file" class="ipt" type="file" accept="video/*" />
-                    <span id="button">上传文件</span>
+                    <span id="button">上传文件/Upload video file</span>
 
                 </li>
                 <li style="height:30px">
@@ -313,11 +317,11 @@
                     </div>
                 </li>
                 <li>
-                    <label for="content">内容:</label>
+                    <label for="content">内容/Contents:</label>
                     <textarea name="content" cols="30" rows="4"></textarea>
                 </li>
                 <li class="sub_area">
-                    <input id="btn_upload" type="submit" value="提交">
+                    <input id="btn_upload" type="submit" value="提交/Submit">
                 </li>
 
             </ul>
